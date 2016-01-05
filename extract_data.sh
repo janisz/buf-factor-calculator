@@ -24,11 +24,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DATA_DIR=$DIR/data
 
 echo -e "\e[92mCloning ${repo}\e[0m"
-mkdir -p repos/$repo
+mkdir -p /tmp/repos/$repo
 mkdir -p $DATA_DIR
-cd repos/$repo
+cd /tmp/repos/$repo/..
 git clone https://github.com/$repo
-
+cd ../$repo
 echo -e "\e[92mGenerating ${repo} log\e[0m"
 git log --pretty=format:'[%h] %an %ad %s' --date=short --numstat > $DATA_DIR/evo.log && cd $DIR
 
