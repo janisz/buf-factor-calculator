@@ -1,0 +1,19 @@
+strict graph G {
+
+ node [shape=record];
+"Tomasz Janiszewski" [label="Tomasz Janiszewski | {ADD|5504}|{DEL|5352}"];
+"Jakub Dutkowski" [label="Jakub Dutkowski|{ADD|411}|{DEL|2137}"];
+tom8ab [label="tom8ab|{ADD|10927}|{DEL|1067}"];
+"Rafal Wyka" [label="Rafal Wyka|{ADD|1800}|{DEL|505}"];
+bednarzm [label="bednarzm|{ADD|2061}|{DEL|1022}"];
+"Tomasz Janiszewski" -- "Rafal Wyka"  [label=26];
+"Tomasz Janiszewski" -- "Jakub Dutkowski"  [label=40];
+"Tomasz Janiszewski" -- tom8ab  [label=25, style=dashed];
+"Tomasz Janiszewski" -- bednarzm  [label=43];
+"Jakub Dutkowski" -- "Rafal Wyka"  [label=41];
+"Jakub Dutkowski" -- tom8ab  [label=4, style=dotted];
+"Jakub Dutkowski" -- bednarzm  [label=33];
+tom8ab -- "Rafal Wyka"  [label=3, style=dotted];
+tom8ab -- bednarzm  [label=1, style=dotted];
+"Rafal Wyka" -- bednarzm  [label=22, style=dashed];
+}
