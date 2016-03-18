@@ -22,36 +22,43 @@ fi
 repo=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DATA_DIR=$DIR/data
+REPO_DIR=/run/media/janisz/A276F14776F11CAB/mgr/repos/$repo
 
-echo -e "\e[92mCloning ${repo}\e[0m"
-mkdir -p /tmp/repos/$repo
+echo -e "\e[92mCloning ${repo} to ${REPO_DIR}\e[0m"
+mkdir -p $REPO_DIR
 mkdir -p $DATA_DIR
-cd /tmp/repos/$repo/..
+cd $REPO_DIR/..
 git clone https://github.com/$repo
 cd ../$repo
+
+echo -e "\e[92mDownloading ${repo} description\e[0m"
+wget https://api.github.com/repos/$repo -o description.json
+
 echo -e "\e[92mGenerating ${repo} log\e[0m"
 git log --pretty=format:'[%h] %an %ad %s' --date=short --numstat > $DATA_DIR/evo.log && cd $DIR
 
 types=( \
-  "abs-churn" \
-  "age" \
-  "author-churn" \
-  "authors" \
+  # "abs-churn" \
+  # "age" \
+  # "author-churn" \
+  # "authors" \
   "communication" \
-  "coupling" \
-  "entity-churn" \
-  "entity-effort" \
-  "entity-ownership" \
-  "fragmentation" \
-  "identity" \
-  "main-dev" \
-  "main-dev-by-revs" \
-  "messages" \
-  "refactoring-main-dev" \
-  "revisions" \
-  "soc" \
+  # "coupling" \
+  # "entity-churn" \
+  # "entity-effort" \
+  # "entity-ownership" \
+  # "fragmentation" \
+  # "identity" \
+  # "main-dev" \
+  # "main-dev-by-revs" \
+  # "messages" \
+  # "refactoring-main-dev" \
+  # "revisions" \
+  # "soc" \
   "summary" \
 )
+
+echo $repo > $DATA_DIR/repo.csv
 
 for type in "${types[@]}"; do
   echo -e "\e[92mCalculating ${type} metric\e[0m"
