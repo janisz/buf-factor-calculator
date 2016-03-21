@@ -40,26 +40,7 @@ REPO_DATA_DIR=$DATA_DIR/repos/$repo
 # mv $REPO_DIR/description.json $REPO_DATA_DIR
 # git log --pretty=format:'[%h] %an %ad %s' --date=short --numstat > $REPO_DIR/evo.log && cd $DIR
 #
-types=( \
-  "abs-churn" \
-  "age" \
-  "author-churn" \
-  "authors" \
-  "communication" \
-  "coupling" \
-  "entity-churn" \
-  "entity-effort" \
-  "entity-ownership" \
-  "fragmentation" \
-  "identity" \
-  "main-dev" \
-  "main-dev-by-revs" \
-  "messages" \
-  "refactoring-main-dev" \
-  "revisions" \
-  "soc" \
-  "summary" \
-)
+types=(abs-churn  age  author-churn  authors  communication  coupling  entity-churn  entity-effort  entity-ownership  fragmentation  identity  main-dev  main-dev-by-revs  messages  refactoring-main-dev  revisions  soc  summary)
 
 echo $repo > $REPO_DATA_DIR/repo.csv
 #
