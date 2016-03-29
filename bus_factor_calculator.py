@@ -1,10 +1,11 @@
 import pandas as pd
 import networkx as nx
+import os
 
-repo = pd.read_csv('data/repo.csv').columns[0]
-authors = pd.read_csv('data/summary.csv')['value'][3]
+repo = os.environ['repo']
+authors = pd.read_csv(os.environ['REPO_DATA_DIR'] + '/summary.csv')['value'][3]
 
-communication = pd.read_csv('data/communication.csv')
+communication = pd.read_csv(os.environ['REPO_DATA_DIR'] + '/communication.csv')
 
 G=nx.from_pandas_dataframe(communication, 'author', 'peer', ['strength'])
 d = nx.pagerank(G, weight='strength')
