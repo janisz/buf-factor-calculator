@@ -64,7 +64,7 @@ input {
           <div id="developers_list">
           </div>
           <input class="form-control" type="text" id="developers" placeholder="Core Developers (comma separated github logins list)">
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Send</button>
+          <button class="btn btn-lg btn-primary btn-block" id='submit' type="submit">Send</button>
       </form>
     </div>  <!-- /row -->
 
@@ -76,18 +76,19 @@ input {
     // https://stackoverflow.com/a/13552556/1387612
     $(document).ready(function() {
       $('form').keydown(function(event){
-        if(event.keyCode == 13) {
+        if(event.keyCode == 13 && !$('#submit').is(':focus')) {
           event.preventDefault();
           return false;
         }
       });
     });
 
-    var choices = ['ActionScript', 'AppleScript', 'Asp', 'Assembly', 'BASIC', 'Batch', 'C', 'C++', 'CSS', 'Clojure', 'COBOL', 'ColdFusion', 'Erlang', 'Fortran', 'Groovy', 'Haskell', 'HTML', 'Java', 'JavaScript', 'Lisp', 'Perl', 'PHP', 'PowerShell', 'Python', 'Ruby', 'Scala', 'Scheme', 'SQL', 'TeX', 'XML'];
+    var developers = [];
+    var repos = [];
 
-    var demo1 = new autoComplete({
+    var devsComplete = new autoComplete({
         selector: '#developers',
-        minChars: 0,
+        minChars: 1,
         onSelect: function(e, term, item) {
           $("#developers_list").append('<span class="badge badge-default">'+ term +'</span>');
           $('#developers').val('');
@@ -95,8 +96,20 @@ input {
         source: function(term, suggest){
             term = term.toLowerCase();
             var suggestions = [];
-            for (i=0;i<choices.length;i++)
-                if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+            for (i=0;i<developers.length;i++)
+                if (~developers[i].toLowerCase().indexOf(term)) suggestions.push(developers[i]);
+            suggest(suggestions);
+        }
+    });
+
+    var repoComplete = new autoComplete({
+        selector: '#repo',
+        minChars: 1,
+        source: function(term, suggest){
+            term = term.toLowerCase();
+            var suggestions = [];
+            for (i=0;i<repos.length;i++)
+                if (~repos[i].toLowerCase().indexOf(term)) suggestions.push(repos[i]);
             suggest(suggestions);
         }
     });
@@ -118,9 +131,12 @@ $('.input-group').change(function() {
     var repo = $('#repo').val();
 
     var githubAPI = "https://api.github.com/";
-    $.getJSON(githubAPI + "users/" + user).done(function( json ) {
+    $.getJSON(githubAPI + "users/" + user + '/' + 'repos').done(function( json ) {
       $('#user-group').removeClass('has-danger').addClass('has-success');
       $('#user').removeClass('has-danger').addClass('form-control-success');
+
+      repos = json.map(function(repo) { return repo.name; });
+      console.log(repos);
     }).fail(function( jqxhr, textStatus, error ) {
       $('#user-group').removeClass('has-success').addClass('has-danger');
       $('#user').removeClass('has-success').addClass('form-control-danger');
@@ -132,7 +148,7 @@ $('.input-group').change(function() {
         $('#repo').removeClass('has-danger').addClass('form-control-success');
 
         $.getJSON(githubAPI + "repos/" + user + "/" + repo + "/" + "contributors").done(function( json ) {
-          choices = json.map(function(user) { return user.login; });
+          developers = json.map(function(user) { return user.login; });
         });
 
 
