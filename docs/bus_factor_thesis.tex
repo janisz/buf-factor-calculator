@@ -1,0 +1,1019 @@
+\documentclass[a4paper,11pt,twoside]{report}
+
+
+% -------------- Kodowanie znaków, język polski -------------
+
+\usepackage[utf8]{inputenc}
+\usepackage[MeX]{polski}
+%\usepackage[T1]{fontenc}
+\usepackage[english, polish]{babel}
+
+
+% ----------------- Przydatne pakiety ----------------------
+\usepackage{amsfonts}
+\usepackage{mathrsfs} 
+\usepackage{amsmath,amsthm,latexsym,xpatch}
+\usepackage[dvips]{graphicx,color}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{verbatim}
+\usepackage{array}
+\usepackage{pstricks}
+\usepackage{textcomp}
+
+
+% ---------------- Marginesy, akapity, interlinia ------------------
+
+\usepackage[inner=20mm, outer=20mm, bindingoffset=10mm, top=25mm, 
+bottom=25mm]{geometry}
+
+
+\linespread{1.5}
+%\allowdisplaybreaks
+\usepackage{indentfirst} % opcjonalnie; pierwszy akapit z wcięciem
+\setlength{\parindent}{5mm}
+
+\hyphenation{Syl-ves-tra}
+\hyphenation{Syl-ves-ter-a}
+
+%--------------------------- ŻYWA PAGINA ------------------------
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+% numery stron: lewa do lewego, prawa do prawego 
+\fancyfoot[LE,RO]{\thepage} 
+% prawa pagina: zawartość \rightmark do lewego, wewnętrznego (marginesu) 
+\fancyhead[LO]{\sc \nouppercase{\rightmark}}
+% lewa pagina: zawartość \leftmark do prawego, wewnętrznego (marginesu) 
+\fancyhead[RE]{\sc \leftmark}
+
+\renewcommand{\chaptermark}[1]{
+\markboth{\thechapter.\ #1}{}}
+
+% kreski oddzielające paginy (górną i dolną):
+\renewcommand{\headrulewidth}{0 pt} % 0 - nie ma, 0.5 - jest linia
+
+
+\fancypagestyle{plain}{% to definiuje wygląd pierwszej strony nowego 
+rozdziału - obecnie tylko numeracja
+  \fancyhf{}%
+  \fancyfoot[LE,RO]{\thepage}%
+  
+  \renewcommand{\headrulewidth}{0pt}% Line at the header invisible
+  \renewcommand{\footrulewidth}{0.0pt}
+}
+
+
+
+% ---------------- Nagłówki rozdziałów ---------------------
+
+\usepackage{titlesec}
+\titleformat{\chapter}%[display]
+  {\normalfont\Large \bfseries}
+  {\thechapter.}{1ex}{\Large}
+
+\titleformat{\section}
+  {\normalfont\large\bfseries}
+  {\thesection.}{1ex}{}
+\titlespacing{\section}{0pt}{30pt}{20pt} 
+%\titlespacing{\co}{akapit}{ile przed}{ile po} 
+    
+\titleformat{\subsection}
+  {\normalfont \bfseries}
+  {\thesubsection.}{1ex}{}
+
+
+% ----------------------- Spis treści ---------------------------
+\def\cleardoublepage{\clearpage\if@twoside
+\ifodd\c@page\else\hbox{}\thispagestyle{empty}\newpage
+\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+
+
+% kropki dla chapterów
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\l@chapter}
+  {\hfil}
+  {\leaders\hbox{\normalfont$\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep 
+mu$}\hfill}
+  {}{}
+\makeatother
+
+\usepackage{titletoc}
+\makeatletter
+\titlecontents{chapter}% <section-type>
+  [0pt]% <left>
+  {}% <above-code>
+  {\bfseries \thecontentslabel.\quad}% <numbered-entry-format>
+  {\bfseries}% <numberless-entry-format>
+  {\bfseries\leaders\hbox{\normalfont$\m@th\mkern \@dotsep mu\hbox{.}\mkern 
+\@dotsep mu$}\hfill\contentspage}% <filler-page-format>
+
+\titlecontents{section}
+  [1em]
+  {}
+  {\thecontentslabel.\quad}
+  {}
+  {\leaders\hbox{\normalfont$\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep 
+mu$}\hfill\contentspage}
+
+\titlecontents{subsection}
+  [2em]
+  {}
+  {\thecontentslabel.\quad}
+  {}
+  {\leaders\hbox{\normalfont$\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep 
+mu$}\hfill\contentspage}
+\makeatother
+
+
+
+% ---------------------- Spisy tabel i obrazków ----------------------
+
+\renewcommand*{\thetable}{\arabic{chapter}.\arabic{table}}
+\renewcommand*{\thefigure}{\arabic{chapter}.\arabic{figure}}
+%\let\c@table\c@figure % jeśli włączone, numeruje tabele i obrazki razem
+
+
+% --------------------- Definicje, twierdzenia etc. ---------------
+
+
+\makeatletter
+\newtheoremstyle{definition}%    % Name
+{3ex}%                          % Space above
+{3ex}%                          % Space below
+{\upshape}%                      % Body font
+{}%                              % Indent amount
+{\bfseries}%                     % Theorem head font
+{.}%                             % Punctuation after theorem head
+{.5em}%                            % Space after theorem head, ' ', or \newline
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}%  % Theorem head spec (can be left empty, meaning `normal')
+\makeatother
+
+% ----------------------------- POLSKI --------------------------------
+\theoremstyle{definition}
+\newtheorem{theorem}{Twierdzenie}[chapter]
+\newtheorem{lemma}[theorem]{Lemat}
+\newtheorem{example}[theorem]{Przykład}
+\newtheorem{proposition}[theorem]{Stwierdzenie}
+\newtheorem{corollary}[theorem]{Wniosek}
+\newtheorem{definition}[theorem]{Definicja}
+\newtheorem{remark}[theorem]{Uwaga}
+
+% If in English, comment this and uncomment below:
+
+% ----------------------------- ENGLISH -----------------------------
+%\theoremstyle{definition}
+%\newtheorem{theorem}{Theorem}[chapter]
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{example}[theorem]{Example}
+%\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{corollary}[theorem]{Corollary}
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{remark}[theorem]{Remark}
+
+
+
+% ----------------------------- Dowód -----------------------------
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]
+{\par
+  \vspace{-12pt}% remove the space after the theorem
+  \pushQED{\qed}%
+  \normalfont
+  \topsep0pt \partopsep0pt % no space before
+  \trivlist
+  \item[\hskip\labelsep
+        \sc
+    #1\@addpunct{:}]\ignorespaces
+}
+{%
+  \popQED\endtrivlist\@endpefalse
+  \addvspace{20pt} % some space after
+}
+
+\renewcommand{\qedhere}{\hfill \qedsymbol}
+\makeatother
+
+
+
+
+
+% -------------------------- POCZĄTEK --------------------------
+
+
+% --------------------- Ustawienia użytkownika ------------------
+
+\newcommand{\tytul}{Wyliczanie współczynnika autobusowego na podstawie 
+historii kodu z systemu kontroli wersji}
+\renewcommand{\title}{Calculating bus factor based on VCS log}
+\renewcommand{\author}{Tomasz Janiszewski}
+\newcommand{\album}{237546}
+\newcommand{\type}{magisters} % magisters, licencjac (Master or Engineer in English)
+\newcommand{\supervisor}{dr inż. Marcin Luckner}
+
+
+
+\begin{document}
+\sloppy
+
+% \selectlanguage{english} % uncomment this for English 
+
+% ----------------------- Abstrakty -----------------------------
+
+%\selectlanguage{polish}
+\begin{abstract}
+
+\begin{center}
+\tytul
+\end{center}
+
+Streszczam.
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod 
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At 
+vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd 
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\\
+
+\noindent \textbf{Słowa kluczowe:} współczynnik autobusowy, własność 
+kodu, 
+\end{abstract}
+
+\null\thispagestyle{empty}\newpage
+
+{\selectlanguage{english}
+\begin{abstract}
+
+\begin{center}
+\title
+\end{center}
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod 
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At 
+vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd 
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod 
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At 
+vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd 
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\\
+
+\noindent \textbf{Keywords:} Truck Factor; Code ownership; Developer turnover; 
+Mining software repositories
+\end{abstract}}
+
+
+\null\thispagestyle{empty}\newpage
+
+\null \hfill Warszawa, dnia ..................\\
+
+\par\vspace{5cm}
+
+\begin{center}
+Oświadczenie % Declaration - for English
+\end{center}
+
+\indent Oświadczam, że pracę \type ką pod
+tytułem ,,\tytul '', której promotorem jest \supervisor \ wykonałam/em
+samodzielnie, co poświadczam własnoręcznym podpisem.
+\vspace{2cm}
+
+% English:
+
+%I hereby declare that the thesis entitled ,,\title '', submitted for the \type 
+~degree, supervised  by \supervisor , is entirely my original work apart from 
+the recognized reference.
+%\vspace{2cm}
+
+\begin{flushright}
+  \begin{minipage}{50mm}
+    \begin{center}
+      ..............................................
+
+    \end{center}
+  \end{minipage}
+\end{flushright}
+
+\thispagestyle{empty}
+\newpage
+
+\null\thispagestyle{empty}\newpage
+% ------------------- 4. Spis treści ---------------------
+% \selectlanguage{english} - for English
+
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+% -------------- 5. ZASADNICZA CZĘŚĆ PRACY --------------------
+\null\thispagestyle{empty}\newpage
+\setcounter{page}{11}
+\pagestyle{fancy}
+
+
+\chapter*{Wstęp} % Intruduction
+\markboth{}{Wstęp}
+\addcontentsline{toc}{chapter}{Wstęp}
+
+Celem pracy jest przedstawienie oraz próba sformalizowania terminu 
+"współczynnik autobusowy" (ang. "bus factor").
+Zaprezentowana definicja ma za zadanie wyznaczenie wartości badanego terminu 
+dla przykładowych projektów dostępnych 
+na otwartych licencjach oraz porównanie się z innymi badaniami nad tym 
+terminem prowadzonymi na świecie.
+
+Docelowo zaprezentowana definicja może znaleźć zastosowanie w szeroko 
+pojętym przemyśle, gdzie zagadnienie 
+autorstwa kodu oraz "ucieczki wiedzy" (ang. knowledge loss) mają krytyczne 
+znaczenie przy szacowaniu 
+zagrożenia dla projektów.
+
+
+\chapter{Rys historyczny}
+
+
+Do badań będących przedmiotem tej pracy wykorzystano publicznie dostępne 
+dane 
+pochodzące z serwisu github.com. Wszystkie badane kody źródłowe zostały 
+udostępnione na wolnych
+licencjach pozwalających autorowi na analizę ich źródeł oraz historii 
+powstawania.
+
+
+\section{Pochodzenie terminu}
+
+Termin bus factor (lub truck factor) swoje pochodzenie zawdzięcza Josphowi 
+Conradowi, któy w 1907 w "The Secret Agent" napisał
+
+\begin{quote}
+But just try to understand that it was a pure accident; as much an accident as 
+if he had been run over by a 'bus while crossing the street.
+\end{quote}
+
+Prawdopodobnie jednym z pierwszych osób które użyły tego idiomu był  
+Michael McLay który w 1994 na liście dyskusyjnej poświeconej jezykowi Python 
+zapytał czy  Guido van Rossum, twórca języka Python, został potrącony 
+przez autobus.
+Prawdopodobnie pierwsze sformułownie terminu pojawiło się w książce Simon, 
+Robert (May 17, 1998). The Mental Health Practitioner and the Law: A 
+Comprehensive Handbook. Harvard University Press. p. 69. W poźniejszych 
+publikacjach termin ten stał się coraz bardziej popularny. Do tego stopnia 
+że dziś funkcjonuje w biznesie nie tylko związnym z IT.
+
+W nimniejszej pracy postaram się sforułować formalną definicję terminu dla 
+projektów informatycznych w których głównym produketem jest program (a 
+pośrednio kod). 
+
+\section{Systemy kontroli wersji}
+
+Ponieważ poziom skomplikowania systemów rośnie z każdym rokiem. Rośnie 
+również liczba osób pracujących wspólnie nad jednym projektem istnieje 
+potrzeba bezpiecznego przechowywania kodu źródłowego. Do tego celu służą 
+systemy kontroli wersji. Pozwalają one na bezproblemową edycję wielu osób 
+nad jedną bazą kodu (code base). Systmy kontroli wersji przechowująć 
+informację na temat atuora, zmian oraz czasu ich wykonania. Ponadto 
+kontrolują sytuacje w której dwie lub wiecej osób edytuje ten sam plik i 
+wspierają łączenie edycji. 
+
+Wyrużniamy 3 rodzaje systemów kontroli wersji:
+\begin{description}
+\item[lokalne] pozwalające na zapisanie danych jedynie na lokalnym komputerze 
+(np. SCCS oraz RCS)
+\item[scentralizowane] działają w systemie klient-serwer. To znaczy całe 
+repozytorium kodu przechowywane jest w centralnym miejscu i wszelkie zmiany 
+muszą być zgłoszone do centralnego serwera. PRzykładem takiego systemu jest 
+Subversion, który jest jednym z najpopularniejszych VCS
+\item[rozproszone] oparte o komunikację każdy z każdym. Każdy z klientów 
+ma własną kopię repozytorium i może ją udostępnić innym, a także 
+pobrać od nich ich wersję w celu nałożenia zmian. W praktyce jednak 
+wyrużnia się centralny serwer na którym znajduje się "oficjalna" kopia 
+kodu, z którego następnie zadania ciągłej integracji pobierają kod celem 
+przetestowania i wdrożenia. Jednym z takich systemów jest git który od czasu 
+powstania zyskuje coraz większą popularność (a w niketórych statystykach 
+wyprzedza SVN)
+\end{description}
+
+Ponieważ wedłóg niektórych statystyk git jest obecnie najpopulanirejszym 
+systemem kontroli wersji. W dalszej części pracy będę zajmował się tylko 
+nim.
+
+
+\subsection{Git}
+
+Git jest rozproszonym systemem kontroli wersji. Pierwsza jego wersja pojawiła 
+się 7 kwietnia 2005 roku. Jednym z jego autorów jest Linus Torvalds, 
+głównie znany jako twórca Linuxa. Git pierwotnie został stworzony na 
+potrzeby kernela, który wcześniej używał P4 jednak po zmianach licencyjnych 
+nie mógł być dalej używany. Ponieważ Linux jest obecnie największym 
+systemem informatycznym o otwartym kodzie, wymagania co do systemu kontroli 
+wersji były bardzo wygurowane. Po pierwsze musiał on wspierać pracę 
+off-line co wyklucza blokowanie pracy. Nad jądrem Linuxa jednoczeńie pracują 
+dziesiątki osób. Dlatego git został zaprojektowany jako rozporszony system 
+aby umożliwić wszystkim jednaczesną pracę. 
+Kolejną cechą gita jest wspracie dla różnych gałęzi kodu. Pozwala to na 
+jednoczesne rowijanie kilku funkcjonalności które zostaną połączone w 
+jedno przed wydaniem, oraz na łatwe nakładanie poprawek do wcześniejszcyh 
+wersji.
+Warto wspomnieć ze git opiera się o znane i powszechnie stosowane protokoły 
+komunikacji takie jak ssh, https, rsync, ftp a także e-mail.
+Główną rożnicą w stosunku do uwcześnie działających systemów był 
+sposób przechowywania rewizji. W większości systemów przechowywane są one 
+jako różnice pomiedzy kolejnymi wersjami. Jednak rodzi to pewne problemy przy 
+przełączaniu pomiędzy rewizjami a także łączeniu zmian. Główną jednak 
+przyczyną decyzji że Git przechowuje rewzje jako kompletny obraz kodu, była 
+szybkość działania oraz niezaeodność a także rosnące pojemnościdysków. 
+Warto zaznaczyć iż git wspiera kompresję danych przy transmisji, a także 
+kompatkowanie działających kopi, dlatego nie ma bardzo dużego narzut 
+zwiazanego z operacjami I/O.
+
+\subsection{Github}
+
+Github jest obecnie najpopularniejszym serwerem gita na świecie. Serwis 
+powstał w 2008, kiedy git był już popularny w środowiskach zbliżonych do 
+kernela. Serwis działa w dwóch wersjach darmowej - wszystkie repozytoria 
+muszą być publiczne, oraz płatwnje - pozwalającej na tworzenie prywatnych 
+repozytorów. Dzięki takiemu podejściu github praktycznie zdominował rynek 
+hostingu projektów opensource odbierajac palmę pierwszeństaw 
+https://sourceforge.net/. Warto zaznaczyć że na githubie publikowane są kody 
+większości przodujacych firm, a w 2015 roku code.google zostało zamknięte i 
+wszystkie repozytoria firmy Google trafiły własnie na Githuba.
+
+Popularność githuba nie wynika tylko z tego że jest on darmowy, a raczej 
+wynika pośrednio z tego faktu. Inne darmowe serwisy nie odniosły tak 
+spekatakularnego sukcesu. Moża tu dopatrywać się faktu że na githubie 
+darmoew repozytoria muszą być publiczne, co niejako automatycznie zwiększa 
+zasięg serisu i zachęca do dzielenia się kodem. Drugą cechą która miała 
+olbrzymi wpływ na popularność githuba jest zaimplementowanie zgodności z 
+SVNem - wciąż najpopularniejszym systemem kontroli wersji. Dla przykłądu 
+Bitbucket pozwala na tworzenie darmowych prywatnych repozytorów (a nawet 
+współdzielenie ich z 5 współpracownikami), wspiera Mercutriala a także 
+posiada większość funkcjolnalności githuba a jednak jego udział w rynku 
+jest marginalny. Trzecią przyczyną jest sam git, ktróy jako rozproszony 
+system kontroli wersji, z założenia nastawiony jest na kolaborację. Dzięki 
+temu bardzo łatwo jest skopiować (ang fork) kod, nanieść własne poprawki, 
+i zwrócić je właścicielowi w formie tak zwanego pull requesta. W innych 
+systemach kontroli wersji nie jest to tak proste.
+
+W 20011 Github osbługiwał 2 miliony repozytoriów.
+
+Poza zwykłymi przechowywaniem kodu źródłowego Github oferuje również 
+podstawowe narzędzia do zarządzania projektami oraz rozwojem kodu. Do tych 
+funkcjonalności należą między innymi issuse - w których można opisywać 
+brakujące funckonalnosci, błedy itp oraz nadawać im odpowienie etykiety oraz 
+śledzić ich postęp w kontekście wydania kolejnej wersji, code review pull 
+requesta - czyli zgłaszanie uwag do kodu przed właczeniem go do głównej 
+gałęzi, releases - miejsce na przechowywanie binarnych reprezentacji wydań, 
+github pages - hosting dla stron projektów (między innymi dokumentacji), a 
+także podstawowe metryki repozytorium takie jak ilosć komitów/linie 
+usunięte/dodane dla użytkownika i projektu, godzimy komitów oraz ich 
+częśtotliwoość.
+
+Z racji swojej otwartości Github jest idealnym źródłem informacji na temat 
+tego w jaki sposób powstają, proejkty typu opensource. Dlatego w poniższej 
+pracy wszelkie dane będą pobierane właśnie z Githuba.
+
+
+\chapter{Metryki rozwoju oprogramowania}
+
+Jak już wcześniej zaznaczono bus factor to liczba deweloperó których 
+należy usunąć z projektu aby ten nie mógłbyć dalej rozwijany.
+
+Nie jest to ścisła definicja. W nimniejszej pracy postarma się pokazać 
+jakie metryki mogą mieć wpływ na ten wskaźnik oraz jak można probować 
+identyfikować głównych deweloperów.
+
+\subsection{Prawo Conweya}
+
+\begin{theorem}{Prawo Conweya}
+organizations which design systems ... are constrained to produce designs which 
+are copies of the communication structures of these organizations
+\end{theorem}
+
+Idea prawa Conweya została sformułowana w 1967 roku. Stanowi bardzo ciekawą 
+opserwację społeczną na temat zależności struktury projektu od struktury w 
+jakiej pracują jego twórcy. Jego słuszność potwierdzają trzy badania MIT 
+wraz z Harvard Business School, oraz niezależnie  University of Maryland we 
+współpracy z firmą Microsoft.
+
+Prawo Conweya stanowi że systemy tworzone przez organizację powielajć 
+strukturę tych organizacji.
+Na przykład mając firmę z dziedziny e-commerce w której poszczególne 
+działy są bardzo mocno niezależne a interakcje zachodzą tylko na wyższym 
+szczeblu menadzerskim powinniśmy być w stanie zauważyć, że system 
+wytworzony przez taką firmę powiela tę struktrę gdyż chociaż stanowi 
+jedną całość poszczególne funckjonalności należące do osobnych 
+działów zachowują pełną autonomiczność komunikując się z pozostałymi 
+tylko po wyznaczonych interfejsach, czasem nawet zachowujac odrebne nazewnictow 
+(distinigues language). Z drugiej strony w firmach nastawionych na interakcję 
+pomiędzy pracownikami, kod takich organizacji powinien być przepleciony 
+zgdonie z tym kto z kim współpracował nad daną funkcjonalnością (por 
+Netflix).
+
+Korzystając z prawa Conweya możemy ekstrapolować strukturę organizacji na 
+strukturę kodu i vice versa. Prawo Conweya wprowadz interesujący czynnik do 
+rozważań nad Bus-factorem, ponieważ zwraca uwagę na fakt wyższości 
+komunikacji ponad sam produkt końcowy jakim jest kod źródłowy 
+działającego systemu. Co za tym idzie wyznaczenie bus factora powinno w 
+jakiś sposób uwzględniać strukturę organizacyjną w jakiej pracują 
+programiści. Zwraca także uwagę nad socjalnymi aspektami wytwarzania 
+oprogramowania.
+
+\section{Metodyka pracy}
+
+Zgodnie z wyżej wspomnianym Prawem Conweya, struktura organizacji ma 
+bezpośredni wpływ na strukturę kodu. Drugim ważnym czynnikim który jest 
+wymuszany przez strukturę firmy jest metodyka pracy.
+
+W inżynieri oprogramowania wyróżniamy dwie główne metodyki:
+
+\subsection{Model kaskadowy (ang. waterfall)}
+Model kaskadowy został zaproponowany w 
+1970 roku przez Winstona W. Royce. Nazwę swą zawdzięcza podobieństwu do 
+wodospad/kaskady, gdyż projekt podzielony jest na etapy i nie można przejść 
+do kolejnego etapu przed zakończeniem poprzedniego. Zazwyczaj tem model 
+stosowany jest przy sformalizowanych i niezmiennych wymgaganiach
+
+\subsection{Model zwinny (ang. agile)}
+Metodyka zaproponowana w 2001 roku głośnym 
+Manifestem Agile pod którym podpisało się kilku czołowych przedstawiliceli 
+branży IT. Główna zmiana w stosunku do modelu kaskadowego to skupienie na 
+przyroście (ang. incremetn) i dostarczaniu jak najszybciej działającego 
+rozwiązania. W odrużnieniu do kaskady gdzie iteracje so ekstremanie 
+kosztowne, w modelu zwinnym iteracje są relatywnie tanie i krótkie 
+(najczęściej 1-4 tygdnie), a na zakończenie dostarczany jest działający 
+produkt. Pozwala to na częstą zmianę wymagań i rozpoczęcie iteracji od 
+nowa, ponosząc zdecydowanie niższe koszty. Metodyki zwinne są często 
+krytykowane za tak zwany przerost formy nad treścią, gdyż formalizowanie 
+wymagań dla konkretej iteracji często zabiera ponad $20\%$ czasu co powoduje 
+spadek wydajności. Obrońcy metodyk zwynnych bronią się tym, że wciąż 
+jest to znacznie niższy koszt niż dowiezienie produktu który znacząco 
+odstaje od bieżących wymagań.
+
+\section{Wolne i Otwarte Oprogramowanie}
+
+Oficjalnie Ruch wolnego i otwartego oprogramowania (ang. free and open-source 
+software) powastał w 1985 roku kiedy Richar M. Stallman ogłosił Manifest 
+GNU. Było to wynikiem działania niektórych firm które zaprzestały 
+udostępniania kodu źródłowego swoich rozwiązań. Wcześniej bowiem 
+kopiowanie kodu, modyfikowanie go i udostępnianie innym było bardzo 
+powszechną praktyką, szczególnie w ośrodkach akademickich gdzie stosunkow 
+dużo osób zaczynało zajmować się informatyką.
+
+W 1991 Linus Thorvalds udostępnił swoją implementację systemu UNIX, na 
+wolnej licencji GPL. Projekt z początku zyskał popularność wśród 
+pasjnatów, którzy dzięki temu mogli uruchomiś UNIXa na swoich prywatnych 
+komputerach zupełnie za darmo. Co więcej mogli również modyfikować jego 
+działanie. 
+
+Obecnie Linux jest największym projektem wolnego oprogramowania. Co roku 
+pracują nad nim 1000 deweloperów z całego świata. Co więcej coraz więcej 
+autorów wykonuje komituje do kernela w ramach swoich komercyjnych zajęć. 
+Już dawno Linux przestał być domeną pasjonatów, dziś jest jedną z 
+liczących się marek na rynku IT.
+
+Innym przykładem wolnego oprogramowania jest GNU. Projekt zapoczątkowany prez 
+RMS. Jest zestawem aplikacji systemowych. Bardzo cześto dystrybouwany razem z 
+Linuxem tworząc razem dystybucję GNU/Linux. Wśród projektów z pod znaku 
+GNU można wymienić takie narzędzia jak GCC czyli zestaw kompilatorów.
+
+Kolejnym przykładem organizacji o otwartym kodzie jest Fundacja Apache. Jej 
+nazwa pochodzi o najpopularniejszego serwera WWW, z którego wyrosła fundacja. 
+Obecnie pod szyldem APache prowadzonych jest kilkanaście projektóœ a w nich 
+między innymi Apache, Spark, Mesos. 
+
+Ponieważ kod źródłowy wilekich firm jest zazwyczaj zamknięty. W dalszych 
+przykładach bedziemy posługiwać się tylko otwartymi kodami. Jednak jak 
+zaznaczono wcześniej struktura kodu częśto odpowiado strukturze organizacji. 
+Dlatego jako żę wymienione wyżej orgaznizacje mają sformalizowaną 
+strukturę, która odpowiada tej z komercyjnych firm będą one punktem 
+odniesienia przy wysnuwaniu ogólnych wniosków.
+
+\section{Rozwój wolnego oprogramowania}
+
+Rozwój wolnego oprogramowania przedstawię na przykładzie projektu Apache 
+Mesos. Odpowiada on temu jak mniej więcej powstaje większość projektów 
+fundacji Apache, oraz temu jak wygląda rozwój oprogramowania w ogóle.
+
+W przypadku otwartych projektów dobrą praktyką jest umieszczanie pliku 
+`CONTRIBUTING` w głównym katalogu projektu z informacją jak wygląda proces 
+zgłaszania zmian.
+
+
+Przed rozpoczęciem prac nad zmianą, należy przejżeć backlog projektu, w 
+celu zidentyfikowania czy ktoś już nie pracuje nad podobną 
+funkcjonalnością. Jeśli okaże się że nie ma zadania które opisuje 
+zmienianą funkcjonalność dobrą praktyką jest utworzenie takiego. Kiedy 
+już zadanie istnieje, kolejnym krokiem jest przypisanie się do niego. 
+Wszystkie projekty fundacji Apache są zarządzane Atlassian Jira. W celu 
+przypisania się do zadania należy utworzyć konto w Jira. Jednak tylko 
+kontrybutorzy mogą być przypisani do zadań. Dlatego wcześniej należy 
+zgłosić chęć bycia kontrybutorem na liście dyskusyjnej mesos-dev. Będąc 
+przypisanym do zadania można rozpocząć pracę. W przypadku bardziej 
+skomplikowanych zadań  należy sporządzić tak zwany design doc w którym 
+będą opisane 
+
+\begin{itemize}
+    \item JIRA Epic
+    \item wprowadzenie do tematyki (Background)
+    \item cel zmiany (Goals) oraz wyspecyfikowanie co nie jest celem (Non-Goals)
+    \item minimalny satysfakcjonujący produkt (Proposed MVP)
+    \item korzyści z wprowadzenia zmian
+    \item prace konieczne do wykonania
+    \item inne zmiany jakie mogą/powinny zostać wprowadzone (Miscellaneous 
+Changes)
+    \item pozostała praca do wykonani (Follow-Up Work)
+\end{itemize}
+
+Dokument ten jest zazwyczaj przygotowywany w porozumienie z sepharedme - osobą 
+odpowiedzialną za daną część systemu, a następnie prezentowany całej 
+społeczności celem zebrania uwag.
+
+Po tym procesie można zacząć pracę nad kodem. Po skończeniu prac należy 
+opublikować zmiany w systemie code review projektu apache. Zazwyczaj kod 
+wymaga przynajmniej jednej akceptacji, lecz w przypadku większych zmian 
+praktywkuje się więcej osób biorących udział w revie. Po poprawieniu 
+wszystkich uwag kod jest mergowany przez jednego z sephardów do głównej 
+gałęzi.
+
+W przypadku jadra Linuxa cały proces przebiega bardzo podobnie jednak z powodu 
+że jest to dużo większy projekt niż wszystkie projekty fundacji Apache, 
+code review i mergowanie kodu ma bardziej feudalny charakter.
+
+W przypadku mniejszych projektów o mniej ustandaryzowanej strukturze często 
+wystrczy zgłosić zmiany w jakiejkolwiek formie a jeden z właścieli przejrzy 
+je i dołączy do głównej gałęzi lub zgłosi uwagi ewentualnie odrzuci 
+pomysł gdyż nie będzie on zgodny z zaplanowaną śieżką rozwoju projektu.
+
+\section{Dług techniczny}
+Dług techniczny to metafora odnosząca się do systemu finansowych. Długiem 
+technicznym określamy ilość pracy koniecznej do wykonania aby konkretne 
+zadanie mogło zostać uznane za wykonane poprawnie. Odkładanie się długu 
+technicznego może prowadzić do zatrzymania procesu wprowadzania nowych 
+funkcjonalności, aż do czasu jego spłacenia. 
+Rozważmy przykład działającego systemu S. Do systemu jest dodawan nowa 
+funkcjonalność, która w wyniki pośpiechu (np. chęć dotrzymania terminu) 
+nie jest pokryta żadnym testem automatycznym, a jedynie manualnym. Powoduje to 
+zaciągnięcie długu technicznego. System ten jest rozwijany o kolejne 
+funkcjonalności, jednak w ramach tego procesu również nie są dodawane nowe 
+testy automatyczne, sprawdzajace czy dodane funkcjonalności działają 
+poprawnie. Przy odpowiednio dużej liczbie takich funckjonalności zmiany w 
+głównych częściach systemu (core) nie są możliwe gdyż ręczne 
+sprawdzenie czy wszystkie dodane funkcjonalnosci działają poprawnie zajmie 
+zbyt wiele czasu. Należy wtedy spłacić dług dopisując testy automatyczne 
+do wszystkich funkcjonalności pamietając o piramidzie testów.  
+Z powyższego przykładu widać, że nie tylko ubytki w ludziach mogą 
+zatrzymać proces rozwoju oprogramowania lecz również błędne decyzje. Z 
+drugiej strony na powyższym przykładzie widać jak dużą rolę testy 
+automatyczne odgrywają w procesie wytwarzania oprogramowania. Należy się 
+zastanowić czy nie są nawet bardziej istotne od samego kodu programu, pod 
+względem wiedzy o działaniu systemu.
+
+
+
+\chapter{Wyznaczanie Bus Factor}
+
+Nie ma wielu prac poświęconych temu tematowi. Spora część środowiska jest 
+świadoma tego terminu, jednak próby wyznaczenia konkretnej wartośći 
+zazwyczaj się nie udają.
+
+Jedną z przyczyn takiego stanu jest brak ścisłej definicji terminu, a także 
+brak danych na których można by oprzeć badania. Firmy niechętnie dzielą 
+się infromacjami o nieudanych projktach, a także o zmianach personalnych. 
+Ponadto brak progressu w projekcie nie zawsze jest wynikiem odejścia 
+kluczowych pracowników, a raczej skutkiem decyzji na szczeblu menadżerskim.
+
+Ponad $90\%$ projektów na Githubie w których od ponad roku nie wprowadzono 
+zmian było opracowywanych przez mniej niż 3 programistów. 
+
+\section{Bus Factor oparty o autorstwo kodu}
+10 września 2015 roku zespół Brazylijskich naukowców opublikował dokument 
+"What is the Truck Factor of popular GitHub applications? A first assessment". 
+W tej pracy zanalizwoano ponad sto (100) repozytoriów z GitHuba i wyliczono 
+ich Bus Factor. W tej pracy posłużono się techniką opisaną jako "autorstwo 
+kodu" (code authorship).
+
+Autorem plik jest osoba która samodzielnie może rozwijać dany plik.Autora 
+wyznaczono na podstawie stopnia autorstwa Degree of Aturship obliczonego 
+według zasady:
+
+Stopień autorstawa kodu ($DOA$) pliku $f$ dla dewelopera $d$ zależy od trzech 
+czynników:
+\begin{itemize}
+    \item pierwszego autorstwa (First authorship FA) - jeśli d jest autorem 
+pliku f to FA = 1 w przeciwnym przypadku FA = 0
+    \item liczby zmian wykonanych przez dewelopera d w pliku f (number of 
+deliveres DL)
+    \item liczby zmian pozostałych deweloperów w pliku f (number of 
+accepances AC)
+\end{itemize}
+i wyraża się wzorem
+\begin{equation}
+    DOA = 3.293 + 1.098 ∗ FA + 0.164 ∗ DL − 0.321 ∗ ln(1 + AC )
+\end{equation}
+
+oznacza to że FA jest dominującym czynnikiem w wyznaczaniu DOA jednak może 
+być używane.
+
+Zaproponowano następującą metodę wyznacania Bus Factor oparte o ideę 
+programowania zachłannego
+
+Dopóki połowa plików ma auora (suma [dla każdego pliku dla każdego 
+dewelopera d: FA(d, f) == 0] < połowa plików) powtarzaj: usuń autora z 
+najwyższym DOA.
+
+Otrzymane rezultaty pokazały, że najwięcej systemów ma bardzo niskie Bus 
+factor.
+
+Wysokie Bus Factor uzykały Homebrew i Linux. Może być to związane z 
+nietypową strukturą tych repozytoriów. Homebrew bowiem to menadżer 
+pakietów dla systemu MacOS a co za tym idzie składa się z dużej liczby 
+niezależnych plików dodawanych przez mainternerów konkretnych pakietów. 
+Podobnie Linux który w większości składa się ze sterowników rówinież 
+zarządzanych przez niezależnych twórców.
+
+\subsection{Krytyka wyznaczania Bus Factor opartego o autrstwo kodu}
+Wyznaczanie Bus Factor tylko na podstawie autorstwa niesie ze sobą ryzyko 
+pominięcia niektórych istotnych danych. Jak wcześniej zauważono autortwo 
+kodu daje bardzo duże wyniki w przypadku projketów będących agregacją 
+bardzo małych niezależnych modułów, jednocześnie rdzeń systemu jest 
+tworzyny przez relatywnie małą liczbę autorów w porównaniu do wszystkich 
+komiterów.
+
+Kolejnym problemem nie uwydatnionym w pracy [1] jest brak kontroli nad typem 
+plików które zostały dodane do projektu. Często się zdarza że do projektu 
+dodawane są wygenerowane klasy, które potem nie są zmieniane. Innym 
+przykładem jest zamrażanie zależności w projektach C/C++ czyli w językach 
+bez ustandaryzowanego menadżera pakietów. Kolejnym przykładem jest 
+dokumentacja, która nawet jeśli nie jest wygenerowana z kodu, może zaburzać 
+wyniki - często dokumentacja pisana jest przez zupełnie inne osoby nie 
+faktyczni autorzy kodu Technical Writter. 
+
+Innym czynnikiem nie uzględnionym przy podejściu opartym o autorstwo kodu, 
+jest historia powstawania projektu. O ile współczesne systemy kontroli wersji 
+potrafią dość dobrze zanczacy czy plik był tworzony od nowa czy tylko 
+zmieniono mu nazwę to jednak przy niektórych typach refactoringu (np. 
+ekstrakcja klasy/interfejsu do osobnego pliku) może wskazywać na zwiększone 
+autorstow osoby refaktorującej. Aby temu zapobiec powinno się wyznaczać 
+autorstwo dla każdej poprzedniej rewizji i w jakiś sposób łączyć te 
+wyniki aby uwzględnić ilość pracy włożoną w projekt. Jednak historia nie 
+jest do końca tracona dzięki uzględnieu współczynnika AC.
+
+Konskewencją wynikającą z pominięcia histri rewizji jest nieuwzględnienie 
+tzw. sprzężeń (coupling). Podczas badania histri różnych systemów można 
+natrafić na pliki które zawsze edytowane są parami np. interfejs i 
+implementacja, klasa i testy jednostkowe lecz czasem bywają bardziej złożone 
+zależności wynikające np. przekopiowania kodu - zmieniona stała musi być 
+poprawiona we wszystkich plikach. Należy się zastanowić jak zaliczać takie 
+zmiany. Gdyż zmiany w plikach nie wynikacją bezpośrednio z dodawania nowych 
+funkcjonalność a jednie z długu technicznego.
+
+\begin{theorem}[Prawo Lehmana]
+As an evolving program is continually changed, its complexity, reflecting 
+deteriorating structure, increases unless work is done to maintain or reduce it.
+\end{theorem}
+
+\begin{quote}
+Various experts have asserted that most of the cost of software ownership arise 
+after delivery, i.e. during “maintenance”.
+\end{quote}
+
+Prawo Lehamana opisuje zależność pomiędzy "siłą" do rozwojem projektu, a 
+jego zatrzymaniu. W swoim atrtykule Lehman opisał trzy typy projektów $S$, 
+$P$ oraz $E$.
+\begin{description}
+\item[S] - program napisany dla dokładnej specyfikacji tego jak ma działać
+\item[P] - program implementujący konkretne procedury, które definiują jak 
+ma działać (np. program grający w szachy)
+\item[E] - program wykonujący zadania rzeczywistego świata a jego działanie 
+ściśle zależy od warunków otoczenia w jakich jest uruchamiany (np. 
+rozliczanie faktur) 
+\end{description}
+
+
+Prawo Lehmanna odnosi się tylko do systemów typu E. Jednak nie umniejsza to 
+jego znaczenia gdyż większość realnych systemów zajmuje się 
+przyspieszeniem zadań rzeczywistego świata.
+
+Do celu wyznaczania Bus Factor prawo Lehmanna jest o tyle istotne że wskazuje 
+jednoznacznie że bez refaktoringu złożoność systemu rośnie, a co za tym 
+idzie ilość wiedzy niezbędnej do implementacji nowych funkcjonalności. Jest 
+to informacja o tyle istotna że nie każdy komit zwiększa skomplikowanie kodu 
+i/lub dodaje nową funkcjonalność. W projektach IT często zdarzają się 
+komity poprawiające niefunkcjonalne aspekty oprogramowania - szybkość 
+działania, przejżystość kodu, modularyzacja. 
+
+Jest to kolejny przykład na to że badanie chwilowego snapshotu repozytorium 
+oraz oparcie się tylko i wyłącznie o autorstwo plików, może nie być 
+wystarczające do szacowania bus factor. Gyż w momentach po refactoringu, 
+gdzie powstaje dużo nowych plików do których nikt inny nie wprowadzał 
+zmian, możemy otrzymać zaniżone wyniki. Ponadto nie uwzględniając histroii 
+zmian nie uwzględnimy autorów części ktróe zostały 
+wyabstarchowane/przeniesione w inne miejsca.
+
+\chapter{Dane}
+
+Opis przygotowania danych.
+
+\section{Wybranie repozytoriów}
+
+Aby pokazać przykłady innych sposobów na wyznaczanie bus factor, należy 
+znaleźć sposób ich porównywania. W projekcie Brazylijskiej badano tylko 
+repozytoria z najpopularniejszych języków na Githubie czyli JavaScript, 
+Python, Ruby, C/C++, Java i PHP. Dla każdego z tych języków wybrano 100 
+najpopularniejszych pod względem liczby gwiazdek repozytoriów. A następnie 
+wybrano 25 pierwszych pod względem liczby deweloperów, komitów oraz plików. 
+Podobną technikę zastosowano w *
+
+W ten sposób oczekiwano na uzyskanie reprezentacyjnej grupy repozytoriów 
+mającej za sobą dłuższy okres dewelopmentu przez znaczącą liczbę 
+aktywnych deweloperów.
+
+Kolejnym krokiem było odfiltrowanie repozytoriów zmigrowanych z innyh 
+systemów kontroli wersji (np. SVN). Przyęto że odrzucane będą repozytoria 
+w których ponad 50% plików dodano w mniej niż 20 komitach.
+
+W wyniku tych prac otrzymano 133 repozytoria.
+
+\section{Przygotowanie repozytoriów}
+
+\subsection{Przygotowanie plików}
+
+Ponieważ metoda oparta na autorstwie kodu jest bardzo wrażliwa na liczbę 
+plików, podjęto decyzję o usunięciu plików dokumentacji, obrazów oraz 
+plików które nie są głownymi plikami źródłowymi (np. usunięcie plików 
+js, w projektach PHP). W wyniku tej operacji usnięto ponad 130 tys plików, 
+czyli ponad jedną trzecią wszystkich plików.
+
+\subsection{Przygotowanie repozytorium}
+
+Git rozróżnia dwie role autorstwa
+\begin{description}
+\item[commiter] - osoba która wprowadziła zmianę do repozytorium
+\item[author] - faktyczny autor kodu który został skomitowany
+\end{description}
+
+Ponadto uwierzytelnienie w Gicie nie ma nic wspólnego z żadną z powyższych 
+dwóch wartości, to znaczy każdy może skomitować podając się za dowolną 
+osobę. Na pierwszy rzut oka wydaje się to bez sensu jednak w przypadku 
+rozproszonych systemów kontroli wersji i tak nie jesteśmy w stanie zapewnić 
+że nikt nie podszywa się pod orginalne repozytorium.
+
+Przy analizowaniu historii repozytoriów należy zwrócić uwagę na ten fakt, 
+gdyż często liczba autorów jaką podaje repozytorium może być większa 
+niż faktyczna liczba osób pracujących w projekcie. Wszystkiemu winne są 
+różnice konfiguracji gita. Na przykład jeden z autorów na firmowym 
+komputerze może używać pełnego imienia i nazwiska oraz firmowego adresu 
+e-mail podczas gdy na prywatnym komputerze posługuje się nickiem i prywatnym 
+adresem.
+
+Z tego powodu w badaniach Brazylijskiej grupy zdecydowano się na ręczne 
+uwspólnienie autorów których Name i e-mail wdawały się podobne. Wstępną 
+filtrację wykonano używając odległości levensteina.
+
+Jest to praktycznie jedyne dostępne narzędzie do tego celu, gdyż nikt nie 
+publikuje lis e-maili skojarzonych z danym kontem na githubie. Zdecydowanie 
+utrudnia to interpretację wyników, w szczególności przy analizie dużej 
+ilości danych.
+
+\section{Analiza komunikacji pomiędzy deweloperami}
+
+Wcześniejsze rozdziały nakreśliły zgrubnie charakterystykę problemu jakim 
+jest wyznaczanie bus factora, oraz obecnie panujące trendy co do prób jego 
+wyznaczania.
+
+\begin{definition}
+Dwie osoby komunikują się ze sobą wtedy i tylko wtedy gdy razem komitowały 
+do jednego pliku.
+\end{definition}
+
+Mając tak zdefiniowaną relację możemy w prosty sposób stworzyć graf $G = 
+{V,E}$ w którym wierzchołkami $V$ są deweloperzy. Krawędź z $v_1$ do $v_2$ 
+istnieje wtedy i tylko wtedy gdy $v_1$ i $v_1$ wprowadzali zmiany w tym samym 
+pliku.
+
+\begin{remark}
+Z powyższej definicji wynika, że taki graf jest nieskierowany.
+\end{remark}
+
+Przy analizie komunikacji można zastanowić się, na wagami poszczególnych 
+relacji. Przy określaniu wag możemy oprzeć się na przykład na ilości 
+komitów do pliku, oraz na sumarycznej ilośćii zmienionych linii.
+
+\section{Analiza danych zawartych w metadanych}
+Jak wcześniej pokazano repozytorium kodu przechowuje nie tylko pliki 
+źródłowe projektu ale również bardzo dużo informacji na temat ich 
+powstawania. Na tej podstawie można prześledzić dokładnie w jaki sposób 
+przebiegał rozwój projektu.
+
+Wcześniej pokazano tylko mały wycinek metadanych przechowycwanych przez 
+repozytorium jakim są ilościowe zmiany w plikach. Bazując na zwykłym logu z 
+repozytorium możemy odczytać znacznie więcej.
+
+Poniżej przykład
+
+    `TODO: DODAĆ PRZYKŁAD`
+
+Z powyższego przykładu widać, że na piwerwszy rzut oka można odczytać 
+jakie pliki zostły zmodyfikowany aby dodać konkretną funkcjonalność 
+opisaną wiadomością. Widać rówinież kto, kiedy i gdzie wykonał 
+konkretną zmianę oraz jaki był jej rozmiar.
+ W większości otwartych repozytoriów praktykuje się mergowanie branchy po 
+wykonaniu wcześniejszego przesunięcia gałęzi na początek głównej 
+gałęzi (rebase) oraz przestrzega się zasady aby całość zmian zawarta 
+była w jednym komicie. Ułatwia to później analizę zmian i pozwala na 
+łatwe i szybkie automatyczne generowanie historii zmian (changelog). A w 
+przypadku analizy metadanych znacząco uproszcza analizowane dane. Można 
+bowiem przyjąć, że każdy pojedynczy komit zwiera całą zmianę dodającą 
+nową funkcjonalność lub poprawiającą błędy.
+ 
+ \section{code-maat}
+ 
+ Jednym z narzędzi do analizy repozytoriów git (a także svn) jest 
+[code-maat](https://github.com/adamtornhill/code-maat). Napisany w języku 
+clojure, potrafi przeanalizować logi z repozytorium i dokonać ekstrakcji 
+danych takich jak:
+\begin{itemize}
+    \item rozmiar zmian per okno czasowe abs-churn
+    \item wiek plików age
+    \item rozmiar zmina per autor author-churn
+    \item autorzy authors
+    \item relacja komunikacji pomiędzy autorami communication
+    \item sprzężenie plików coupling
+    \item rozmiar zmian per plik entity-churn
+    \item entity-effort
+    \item autorstwo pliku entity-ownership
+    \item fragmentation
+    \item identity
+    \item właśiciel pliku main-dev
+    \item właściciel pliku ze względu na rewizje main-dev-by-revs,
+    \item wiadomości messages
+    \item główny programista ze względu na refactorign refactoring-main-dev
+    \item liczba rewizji revisions
+    \item sprzęganie moduułów (sum of coupling) soc
+
+\end{itemize}
+
+Poniżej zaprezentuję przykład ekstrakcji danych z repozytorium projektu 
+Apache Mesosa
+
+
+% -------------------- 6. Bibliografia -----------------------
+% Bibliografia leksykograficznie wg nazwisk autorów
+
+\begin{thebibliography}{20}%jak ktoś ma więcej książek, to niech wpisze  większą liczbę
+% \bibitem[numerek]{referencja} Autor, \emph{Tytuł}, Wydawnictwo, rok, strony
+% cytowanie: \cite{referencja1, referencja 2,...}
+
+\bibitem[1]{Ktos} A. Aaaaa, \emph{Tytuł}, Wydawnictwo, rok, strona-strona.
+\bibitem[2]{Innyktos} J. Bobkowski, S. Dobkowski, \emph{Blebleble}, Magazyn nr, 
+rok, strony.
+\bibitem[3]{B} C. Brink, \emph{Power structures}, Algebra Universalis 30(2), 
+1993, 177-216.
+\bibitem[4]{H} F. Burris, H. P. Sankappanavar, \emph{A Course of Universal 
+Algebra}, Springer-Verlag, New York, 1981.
+\end{thebibliography}
+\thispagestyle{empty}
+
+
+% --- 7. Wykaz symboli i skrótów - jeśli nie ma, zakomentować
+\chapter*{Wykaz symboli i skrótów}
+
+\begin{tabular}{cl}
+nzw. & nadzwyczajny \\
+* & operator gwiazdka \\
+$\widetilde{}$ & tylda
+\end{tabular}
+\thispagestyle{empty}
+
+
+% ----- 8. Spis rysunków - jeśli nie ma, zakomentować --------
+\listoffigures
+\thispagestyle{empty}
+
+
+% ------------ 9. Spis tabel - jak wyżej ------------------
+\renewcommand{\listtablename}{Spis tabel}
+\listoftables
+\thispagestyle{empty}
+
+
+
+% 10. Spis załączników - jak nie ma załączników, to zakomentować lub 
+usunąć
+
+\chapter*{Spis załączników}
+\begin{enumerate}[itemsep = 0pt]
+\item Załącznik 1
+\item Załącznik 2
+\end{enumerate}
+\thispagestyle{empty}
+
+% --------------------- 11. Załączniki ---------------------
+% to jest po to, żeby było wiadomo, że załączniki znajdują się na końcu 
+pracy
+
+\newpage
+\pagestyle{empty} 
+Załącznik 1, załącznik 2
+\end{document}

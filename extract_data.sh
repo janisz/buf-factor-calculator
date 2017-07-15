@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 display_usage() {
 	echo "Ensure that git and code-maat are in PATH"
 	echo -e "\nUsage:\n$0 [github repo handle <user/repo>] \n"
@@ -12,7 +12,7 @@ then
 fi
 
 # check whether user had supplied -h or --help . If yes display usage
-if [[ ( $# == "--help") ||  $# == "-h" ]]
+if [[ $# == "--help" ||  $# == "-h" ]]
 then
 	display_usage
 	exit 0
@@ -21,24 +21,24 @@ fi
 repo=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DATA_DIR=$DIR/data
-REPO_DIR=/run/media/janisz/A276F14776F11CAB/mgr/repos/$repo
+REPO_DIR=/media/janisz/A276F14776F11CAB/mgr/repos/$repo
 
-# echo -e "\e[92mCloning ${repo} to ${REPO_DIR}\e[0m"
-# mkdir -p $REPO_DIR
-# mkdir -p $DATA_DIR
+echo -e "\e[92mCloning ${repo} to ${REPO_DIR}\e[0m"
+mkdir -p $REPO_DIR
+mkdir -p $DATA_DIR
 cd $REPO_DIR/..
-#git clone https://github.com/$repo
+git clone https://github.com/$repo
 cd ../$repo
 
 #echo -e "\e[92mDownloading ${repo} description\e[0m"
-#wget https://api.github.com/repos/$repo -o description.json
+wget https://api.github.com/repos/$repo -o description.json
 
 echo -e "\e[92mGenerating ${repo} log\e[0m"
 REPO_DATA_DIR=$DATA_DIR/repos/$repo
-# mkdir -p $REPO_DATA_DIR
-# mv $REPO_DIR/evo.log $REPO_DATA_DIR
-# mv $REPO_DIR/description.json $REPO_DATA_DIR
-# git log --pretty=format:'[%h] %an %ad %s' --date=short --numstat > $REPO_DIR/evo.log && cd $DIR
+mkdir -p $REPO_DATA_DIR
+mv $REPO_DIR/evo.log $REPO_DATA_DIR
+mv $REPO_DIR/description.json $REPO_DATA_DIR
+git log --pretty=format:'[%h] %an %ad %s' --date=short --numstat > $REPO_DIR/evo.log && cd $DIR
 #
 types=(abs-churn  age  author-churn  authors  communication  coupling  entity-churn  entity-effort  entity-ownership  fragmentation  identity  main-dev  main-dev-by-revs  messages  refactoring-main-dev  revisions  soc  summary)
 
